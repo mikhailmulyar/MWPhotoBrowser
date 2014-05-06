@@ -11,6 +11,7 @@
 #import "MWPhotoBrowser.h"
 #import "MWPhotoBrowserPrivate.h"
 #import "SDImageCache.h"
+#import "UIView+Frame.h"
 
 #define PADDING                  10
 #define ACTION_SHEET_OLD_ACTIONS 2000
@@ -428,7 +429,11 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    _viewIsActive = YES;
+
+	if (!_viewIsActive && self.forceControlsHidden)
+		[self setControlsHidden:self.forceControlsHidden animated:animated permanent:YES];
+
+	_viewIsActive = YES;
 }
 
 - (void)willMoveToParentViewController:(UIViewController *)parent {
@@ -639,7 +644,9 @@
         [self performLayout];
         [self.view setNeedsLayout];
     }
-    
+
+
+	[_gridController.collectionView reloadData];
 }
 
 - (NSUInteger)numberOfPhotos {
@@ -1170,11 +1177,13 @@
     
     // Update
     [self updateNavigation];
-    [self setControlsHidden:NO animated:YES permanent:YES];
+    [self setControlsHidden:self.forceControlsHidden animated:animated permanent:YES];
     
     // Animate grid in and photo scroller out
     [UIView animateWithDuration:animated ? 0.3 : 0 animations:^(void) {
-        _gridController.view.frame = self.view.bounds;
+		CGRect gridFrame = self.view.bounds;
+		gridFrame.origin.y -= self.forceControlsHidden ? self.navigationController.navigationBar.height : 0;
+        _gridController.view.frame = gridFrame;
         CGRect newPagingFrame = [self frameForPagingScrollView];
         newPagingFrame = CGRectOffset(newPagingFrame, 0, (self.startOnGrid ? 1 : -1) * newPagingFrame.size.height);
         _pagingScrollView.frame = newPagingFrame;
@@ -1231,7 +1240,10 @@
     // Force visible
     if (![self numberOfPhotos] || _gridController || _alwaysShowControls)
         hidden = NO;
-    
+
+	if (_gridController && self.forceControlsHidden)
+		hidden = YES;
+
     // Cancel any timers
     [self cancelControlHiding];
     
