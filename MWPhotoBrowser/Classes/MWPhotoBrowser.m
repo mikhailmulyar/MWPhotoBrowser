@@ -11,7 +11,6 @@
 #import "MWPhotoBrowser.h"
 #import "MWPhotoBrowserPrivate.h"
 #import "SDImageCache.h"
-#import "UIView+Frame.h"
 
 #define PADDING                  10
 #define ACTION_SHEET_OLD_ACTIONS 2000
@@ -1182,7 +1181,7 @@
     // Animate grid in and photo scroller out
     [UIView animateWithDuration:animated ? 0.3 : 0 animations:^(void) {
 		CGRect gridFrame = self.view.bounds;
-		gridFrame.origin.y -= self.forceControlsHidden ? self.navigationController.navigationBar.height : 0;
+		gridFrame.origin.y -= self.forceControlsHidden ? self.navigationController.navigationBar.frame.size.height : 0;
         _gridController.view.frame = gridFrame;
         CGRect newPagingFrame = [self frameForPagingScrollView];
         newPagingFrame = CGRectOffset(newPagingFrame, 0, (self.startOnGrid ? 1 : -1) * newPagingFrame.size.height);
