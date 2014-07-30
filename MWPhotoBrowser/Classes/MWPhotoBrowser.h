@@ -53,6 +53,8 @@
 @property (nonatomic) BOOL forceControlsHidden;
 @property (nonatomic) NSUInteger delayToHideElements;
 @property (nonatomic, readonly) NSUInteger currentIndex;
+@property (nonatomic, strong) UIImage *navBarBackground;
+@property (nonatomic, strong) UIImage *navBarBackgroundLandscape;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray  __attribute__((deprecated("Use initWithDelegate: instead"))); // Depreciated

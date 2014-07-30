@@ -458,8 +458,8 @@
     navBar.translucent = YES;
     navBar.barStyle = UIBarStyleBlackTranslucent;
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-        [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
+        [navBar setBackgroundImage:self.navBarBackground forBarMetrics:UIBarMetricsDefault];
+        [navBar setBackgroundImage:self.navBarBackgroundLandscape forBarMetrics:UIBarMetricsLandscapePhone];
     }
 }
 
